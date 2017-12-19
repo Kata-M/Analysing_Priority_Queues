@@ -34,11 +34,13 @@ void Insert_Front(int x){
 	struct Node* newNode = NewNode(x);
 	if(first == NULL){
 		first = newNode;
+		last = first;
 		return;
 	}
 	first -> front = newNode;
 	newNode -> next = first;
 	first = newNode;
+	newNode -> front = NULL;
 
 }
 
@@ -46,11 +48,13 @@ void Insert_End(int x){
 	struct Node* newNode = NewNode(x);
 	if(first == NULL){
 		first = newNode;
+		last = first;
 		return;
 	}
 	if(last == NULL){
 		first -> next = newNode;
 		newNode->front = first;
+		return;
 	}
 
 	newNode->front = last;
@@ -83,6 +87,12 @@ int main(){
 	Print();
 	Insert_Front(10);
 	Print();
+	Insert_End(7);
+	Insert_End(7);
+	Insert_End(7);
+	Print();
+	printf("Last: %d\n",last->data);
+	printf("First: %d\n",first->data);	
 }
 
 
