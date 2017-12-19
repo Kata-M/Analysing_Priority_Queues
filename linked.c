@@ -19,6 +19,7 @@ struct Node {
 
 struct Node* first; //global pointer to the first node
 struct Node* last; //global pointer to the last node
+struct Node* middle;
 
 
 struct Node* NewNode(int x){
