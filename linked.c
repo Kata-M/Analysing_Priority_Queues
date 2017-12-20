@@ -17,9 +17,9 @@ struct Node {
 	
 };
 
-struct Node* first; //global pointer to the first node
-struct Node* last; //global pointer to the last node
-struct Node* middle;
+struct Node* max; //global pointer to the max node
+struct Node* min; //global pointer to the min node
+int mid; //average of max and min, decides if enque from front or end
 
 
 struct Node* NewNode(int x){
@@ -31,99 +31,136 @@ struct Node* NewNode(int x){
 	return newNode;
 }
 
-void Insert_Front(int x){
+void Enqueue(int x){
+	//create a new node with the value of x
 	struct Node* newNode = NewNode(x);
 	//if the list is empty do this
-	if(first == NULL){
-		first = newNode;
-		last = first;
+	if(max == NULL){
+		max = newNode;
+		min = max;
 		return;
 	}
-
-	//insert to front if new is greater than or equal first. first always has the highest value
+	//insert to front if new is greater than or equal max. max always has the highest value
 	//equality is to make the code stable. no swapping of equal values
-	if(newNode->data > first->data){
-	first -> front = newNode;
-	newNode -> next = first;
-	first = newNode;
+	if(newNode->data >= max->data){
+	max -> front = newNode;
+	newNode -> next = max;
+	max = newNode;
 	newNode -> front = NULL;
 	return;
 	}
 
-	//insert to end if new is smaller than or equal last. last always has the smallest value
+	//insert to end if new is smaller than or equal min. min always has the smallest value
 	//equality is to make the code stable. no swapping of equal values
-	if(newNode->data < last->data){
-	last-> next = newNode;
-	newNode -> front = last;
-	last = newNode;
+	if(newNode->data <= min->data){
+	min-> next = newNode;
+	newNode -> front = min;
+	min = newNode;
 	newNode -> next = NULL;
 	return;
 	}
 
-	struct Node* temp = first;
-	while(newNode->data <= temp->data && temp->next != NULL){
-		//if(newNode->data == temp->data) break;
+	mid = (max->data + min->data)/2;
+	printf("MID: %d\n", mid);
+	if(newNode->data >= mid){
+		//insert from the front (max)
+			printf("INSERT FROM FRONT");
 
-		temp = temp -> next;
-		printf("WHILE temp: %d\n", temp->data);
-	}
-	    printf("new node: %d\n", newNode->data);
-		printf("final temp: %d\n", temp->data);
-		printf("final temp front next: %d\n", temp->front->next->data);
-		printf("first: %d\n", first->data);
-		printf("last: %d\n", last->data);
-		printf("\n");
+			struct Node* temp = max;
+			while(newNode->data < temp->data && temp->next != NULL){
+				//if(newNode->data == temp->data) break;
 
-
-		if(newNode->data > temp->data){
-			printf("Inside IF\n");
-
-			temp->front->next = newNode;
-			printf("final temp front next: %d\n", temp->front->next->data);
-
-			newNode->next = temp;
-			printf("newNode next: %d\n", newNode->next->data);
-
-			newNode->front = temp->front;
-			printf("newNode front: %d\n", newNode->front->data);
-
-			temp->front = newNode;
-			printf("temp front: %d\n", temp->front->data);
+				temp = temp -> next;
+				//printf("WHILE temp: %d\n", temp->data);
+			}
+			    printf("new node: %d\n", newNode->data);
+				printf("final temp: %d\n", temp->data);
+				//printf("final temp front next: %d\n", temp->front->next->data);
+				printf("max: %d\n", max->data);
+				printf("min: %d\n", min->data);
 	
-			printf("\n");
-	    }
 
 
+				if(newNode->data >= temp->data){
+					printf("Inside IF\n");
+
+					temp->front->next = newNode;
+					//printf("final temp front next: %d\n", temp->front->next->data);
+
+					newNode->next = temp;
+					//printf("newNode next: %d\n", newNode->next->data);
+
+					newNode->front = temp->front;
+					//printf("newNode front: %d\n", newNode->front->data);
+
+					temp->front = newNode;
+					//printf("temp front: %d\n", temp->front->data);
+			
+					//printf("\n");
+			    }
+
+	}else{
+		//insert from the end (min)
+			printf("INSERT FROM END");
+			struct Node* temp = min;
+			while(newNode->data > temp->data && temp->next != NULL){
+				//if(newNode->data == temp->data) break;
+
+				temp = temp -> front;
+				//printf("WHILE temp: %d\n", temp->data);
+			}
+			    printf("new node: %d\n", newNode->data);
+				printf("final temp: %d\n", temp->data);
+				//printf("final temp front next: %d\n", temp->front->next->data);
+				printf("max: %d\n", max->data);
+				printf("min: %d\n", min->data);
+				printf("\n");
 
 
+				if(newNode->data >= temp->data){
+					printf("Inside IF\n");
 
+					temp->front->next = newNode;
+					//printf("final temp front next: %d\n", temp->front->next->data);
+
+					newNode->next = temp;
+					//printf("newNode next: %d\n", newNode->next->data);
+
+					newNode->front = temp->front;
+					//printf("newNode front: %d\n", newNode->front->data);
+
+					temp->front = newNode;
+					//printf("temp front: %d\n", temp->front->data);
+			
+					//printf("\n");
+			    }
+	}
 }
 
 //insert_end is not used atm and should not be used
-void Insert_End(int x){
+/*void Insert_End(int x){
 	struct Node* newNode = NewNode(x);
 	//if the list is empty
-	if(first == NULL){
-		first = newNode;
-		last = first;
+	if(max == NULL){
+		max = newNode;
+		min = max;
 		return;
 	}
-	//if last does not point to anything yet
-	if(last == NULL){
-		first -> next = newNode;
-		newNode->front = first;
+	//if min does not point to anything yet
+	if(min == NULL){
+		max -> next = newNode;
+		newNode->front = max;
 		return;
 	}
-	newNode->front = last;
-	last->next = newNode;
-	last = newNode;
+	newNode->front = min;
+	min->next = newNode;
+	min = newNode;
 	newNode->next = NULL;
-}
+}*/
 
 void Print(){
-	struct Node* temp = first;
+	struct Node* temp = max;
 	printf("The linked list: ");
-
 	while(temp != NULL){
 		printf("[%d] -> ", temp->data);
 		temp = temp->next;
@@ -132,27 +169,45 @@ void Print(){
 }
 
 int main(){
-	first = NULL;
-	struct Node* node = NewNode(1);
-	printf("Node: %d\n",node->data);
+	max = NULL;
 	Print();
-	Insert_Front(1);
+	Enqueue(4);
 	Print();
-	Insert_Front(3);
+	Enqueue(8);
 	Print();
-	Insert_Front(2);
+	Enqueue(2);
 	Print();
-	Insert_Front(5);
+	Enqueue(0);
 	Print();
-	Insert_Front(3);
-	Insert_Front(3);
-	Insert_Front(0);
+	Enqueue(1);
+	Print();
+	Enqueue(7);
+	Print();
+	Enqueue(0);
+	Print();
+	Enqueue(0);
+	Print();
+	Enqueue(0);
+	Print();
+	Enqueue(8);
+	Print();
+	Enqueue(4);
+	Print();
+	Enqueue(4);
+	Print();
+	/*
+	Enqueue(1);
+	Enqueue(3);
+	Enqueue(2);
+	Enqueue(0);
+	Enqueue(6);
+	*/
 
 	Print();
 	Print();
 
-	printf("First: %d\n",first->data);	
-	printf("Last: %d\n",last->data);
+	printf("max: %d\n",max->data);	
+	printf("min: %d\n",min->data);
 
 }
 
