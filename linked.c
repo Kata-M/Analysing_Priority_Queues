@@ -6,15 +6,14 @@
 #include<string.h>
 #include<time.h>
 
+
+
 struct Node {
 	int data;
 	struct Node* front;
 	struct Node* next;
 };
-struct Node* max; //global pointer to the max node
-struct Node* min; //global pointer to the min node
-int mid; //average of max and min, decides if enque from front or end
-int size; //size of the list
+
 
 struct Node* NewNode(int x){
 	struct Node* newNode =  (struct Node*)malloc(sizeof(struct Node));
@@ -24,6 +23,16 @@ struct Node* NewNode(int x){
 	return newNode;
 }
 
+struct Node* max; //pointer to the max node
+struct Node* min; //pointer to the min node
+int mid; //average of max and min, decides if enque from front or end
+int size; //size of the list
+
+
+void Create_Queue(){
+		max = NULL;
+		return;
+}
 //enqueue complexity O(n)
 void Enqueue(int x){
 		printf("\n \n");
@@ -155,7 +164,7 @@ void Print(){
 }
 
 int main(){
-	max = NULL;
+	Create_Queue();
 	Print();
 	Enqueue(4);
 	Print();
