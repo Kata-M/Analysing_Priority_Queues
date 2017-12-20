@@ -14,6 +14,7 @@ struct Node {
 struct Node* max; //global pointer to the max node
 struct Node* min; //global pointer to the min node
 int mid; //average of max and min, decides if enque from front or end
+int size; //size of the list
 
 struct Node* NewNode(int x){
 	struct Node* newNode =  (struct Node*)malloc(sizeof(struct Node));
@@ -23,6 +24,7 @@ struct Node* NewNode(int x){
 	return newNode;
 }
 
+//enqueue complexity O(n)
 void Enqueue(int x){
 		printf("\n \n");
 		printf("New Enque operation: \n");
@@ -32,6 +34,7 @@ void Enqueue(int x){
 		if(max == NULL){
 			max = newNode;
 			min = max;
+			size++;
 			return;
 		}
 		//-------------------------------------------------------------------------------//
@@ -42,6 +45,7 @@ void Enqueue(int x){
 		newNode -> next = max;
 		max = newNode;
 		newNode -> front = NULL;
+		size++;
 		return;
 		}
 		//-------------------------------------------------------------------------------//
@@ -52,6 +56,7 @@ void Enqueue(int x){
 		newNode -> front = min;
 		min = newNode;
 		newNode -> next = NULL;
+		size++;
 		return;
 		}
 		//-------------------------------------------------------------------------------//
@@ -78,6 +83,7 @@ void Enqueue(int x){
 						newNode->next = temp;
 						newNode->front = temp->front;
 						temp->front = newNode;
+						size++;
 				    }
 
 		}else{
@@ -98,17 +104,52 @@ void Enqueue(int x){
 						newNode->next = temp;
 						newNode->front = temp->front;
 						temp->front = newNode;
+						size++;
 				    }
 		}
 }
 
+//dequeue complexity O(1)
+//dequeue returns the min element
+int Dequeue(){
+			if(max == NULL){
+				printf("List is empty!\n");
+				return 0;
+			}
+			int value = min->data;
+			struct Node* temp;
+			temp = min;
+			min = temp->front;
+			free(temp);
+			if(min != NULL){
+				min->next = NULL;
+				size--;
+			}
+			if(size == 0){
+				max =NULL;
+			}
+			//only one element left in the list
+			if(max->next == NULL){
+				value = max->data;
+				max = NULL;
+				size--;
+			}
+			printf("Dequeued value is  [%d].\n\n",value);
+			return value;
+}
 
 void Print(){
-	struct Node* temp = max;
-	printf("The linked list: ");
-	while(temp != NULL){
-		printf("[%d]->", temp->data);
-		temp = temp->next;
+	
+	if(size != 0){
+		struct Node* temp = max;
+
+		printf("The linked list: ");
+		while(temp != NULL){
+			printf("[%d]->", temp->data);
+			temp = temp->next;
+		}
+	}else{
+		printf("The list is empty!");
 	}
 	printf("\n");
 }
@@ -140,9 +181,31 @@ int main(){
 	Print();
 	Enqueue(4);
 	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
+	Dequeue();
+	Print();
 
-	printf("max: %d\n",max->data);	
-	printf("min: %d\n",min->data);
 
 }
 
